@@ -1,0 +1,42 @@
+:root{
+    --dark-color: #DE3163;
+}
+header{
+    background-color: var(--dark-color) ;
+}
+h1{
+    text-shadow: 2px 2px 4px #000000;
+}
+
+#search-label,
+#day-5{
+    text-shadow: 1px 1px 2px lightgray;
+}
+
+#search-btn{
+    background-color: var(--dark-color);
+    text-shadow: 2px 2px 4px #000000;
+}
+
+#search-btn:hover{
+    box-shadow: 5px 5px 5px lightgray;
+}
+
+.custom-card{
+    background-color: var(--dark-color); 
+    text-shadow: 2px 2px 4px #000000;
+}
+.top-card{
+    border: 2px solid;
+    text-shadow: 1px 1px 2px lightgray;
+}
+
+#city{
+    border: 2px solid
+}
+
+.searched-city-btn{
+    border:2px solid;
+    background-color: gray;
+    text-shadow: 2px 2px 4px #000000;
+}
