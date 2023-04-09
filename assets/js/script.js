@@ -34,7 +34,7 @@ function refreshPage(){
 
 //------------------------------------------- search weather ---------------------------------------
 searchBtn.on("click", searchWeather);
-//This function 
+//This function calls the handleCallingApis function for the requested city
 function searchWeather(){
     var searchedCityValue = searchedcity.val().trim();
     var cityWordArray = searchedCityValue.split(",");
@@ -67,7 +67,7 @@ function handleCallingApis() {
                     showColWeather(false);
                 }
                 else{
-                    //If city is found, the longitude and 
+                    //If city is found, its longitude and lattitude will be retrieved and sent to the weather API
                     coordinates.push(geoData[0].lat);
                     coordinates.push(geoData[0].lon);
                     var weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?lat="+coordinates[0]+"&lon="+coordinates[1]+"&appid="+ APIKEY;
@@ -86,8 +86,60 @@ function handleCallingApis() {
                                                             icon: todayData.weather[0].icon
                                                         }
                                 showWeatherSituation("today", weatherCondition, true)
-                                saveSearchedCity();
-                                showColWeather(true);
+                                var forecastApiUrl = "https://api.openweathermap.org/data/2.5/forecast?lat="+coordinates[0]+"&lon="+coordinates[1]+"&appid="+ APIKEY;
+                                //This fetch brings the response about today's weather
+                                fetch(forecastApiUrl).then(function (response) {
+                                    if (response.ok) {
+                                        response.json().then(function (forecastData) {
+                                            var forecastDataList = forecastData.list;
+                                            var today = dayjs();
+                                            var weatherPerDayList = [];
+                                            //--------------find max weather for each date--------------- 
+                                            for (var j = 1; j <= 5; j++){
+                                                var day = today.add(j, "day")
+                                                var dayFormatted = day.format("YYYY-MM-DD");
+                                                var wDayList = [];
+                                                for(var i=0; i < forecastDataList.length; i++){
+                                                    var fDateTime = forecastDataList[i]["dt_txt"]; 
+                                                    var fDateArray = fDateTime.split(" ");
+                                                    var fDate = fDateArray[0];
+                                                    if(fDate == dayFormatted){
+                                                        wDayList.push(forecastDataList[i]);
+                                                    }  
+                                                }
+                                                var maxTemp = wDayList[0].main.temp;
+                                                var maxIndex = 0
+                                                for(var i=1; i < wDayList.length; i++){
+                                                    if (wDayList[i].main.temp > maxTemp){ 
+                                                        maxTemp = wDayList[i].main.temp;
+                                                        maxIndex = i;
+                                                    }
+                                                }
+                                                weatherPerDayList.push(wDayList[maxIndex]);                    
+                                            }
+                                            //-----------making an object for each date---------------
+                                            for (var i = 0; i < weatherPerDayList.length; i++){
+                                                var datePart = "date"+(i+1);
+                                                var day = weatherPerDayList[i]["dt_txt"]; 
+                                                var dateFormatted = dayjs(day).format("M/D/YYYY");
+                                                var tempFarenheit = parseFloat(((weatherPerDayList[i].main.temp-273)*1.8)+32).toFixed(2);
+                                                var weatherCondition = {
+                                                                            date: dateFormatted,
+                                                                            temp: tempFarenheit,
+                                                                            wind: weatherPerDayList[i].wind.speed,
+                                                                            humidity: weatherPerDayList[i].main.humidity,
+                                                                            icon: weatherPerDayList[i].weather[0].icon
+                                                                        }
+                                                showWeatherSituation(datePart, weatherCondition, false)
+                                            }
+                                            //----------------------------------------------------------
+                                            saveSearchedCity();
+                                            showColWeather(true);                  
+                                        });
+                                    } else {
+                                        alert("There is a connection error!")
+                                    }
+                                });
                             });
                         } else {
                             alert("There is a connection error!")
@@ -151,7 +203,10 @@ function addSearchedButtons(cityName){
 //--------------------------------------------------------------------------------------------------
 
 //----------------------------------------- show weather situation----------------------------------
+//This function shows the weather condition for each day based on the date that has been called for
 function showWeatherSituation(datePart, weatherObj, isToday){   
+    /* As the way of showing date is different for the current day and the other days, 
+    the variable of isToday has been defined */
     if(isToday){
         var city = $("#city-name");
         var cityText = cityName+" ("+weatherObj.date+") "
