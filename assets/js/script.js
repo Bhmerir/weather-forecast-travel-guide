@@ -34,12 +34,14 @@ function refreshPage(){
 
 //------------------------------------------- search weather ---------------------------------------
 searchBtn.on("click", searchWeather);
-
+//This function 
 function searchWeather(){
-    cityName = searchedcity.val().trim();
+    var searchedCityValue = searchedcity.val().trim();
+    var cityWordArray = searchedCityValue.split(",");
+    cityName = cityWordArray[0];
     if(cityName){
-        //get lattitude and longitude
-        getGeographicalCoordinates();
+        //Call APIs
+        handleCallingApis();
     }
     else{
         alert("A city name should be inserted!")
@@ -49,32 +51,55 @@ function searchWeather(){
 
 //--------------------------------------------------------------------------------------------------
 
-//----------------------------------- get Geographical Coordinates ---------------------------------
-function getGeographicalCoordinates() {
+//----------------------------------- Handle calling APIs  ---------------------------------
+/*This function is responsible for calling the APIs of Geographical coordinates and weather*/
+function handleCallingApis() {
     var coordinates=[];
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q="+cityName+"&appid="+ APIKEY;
-    fetch(apiUrl).then(function (response) {
-      if (response.ok) {
-        response.json().then(function (data) {
-        //If the city is not found, the length of data list will be empty
-         if(data.length === 0){
-            alert("The searched city is not found!");
-            searchedcity.val("");
-            showColWeather(false);
-         }
-         else{
-            //If city is found, the longitude and 
-            coordinates.push(data[0].lat);
-            coordinates.push(data[0].lon);
-            saveSearchedCity();
-            showColWeather(true);
-         }
-        });
-      } else {
-        alert("There is a connection error!")
-      }
+    var GeoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q="+cityName+"&appid="+ APIKEY;
+    //This fetch brings the response about Geographical coordinates
+    fetch(GeoApiUrl).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (geoData) {
+                //If the city is not found, the length of data list will be empty
+                if(geoData.length === 0){
+                    alert("The searched city is not found!");
+                    searchedcity.val("");
+                    showColWeather(false);
+                }
+                else{
+                    //If city is found, the longitude and 
+                    coordinates.push(geoData[0].lat);
+                    coordinates.push(geoData[0].lon);
+                    var weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?lat="+coordinates[0]+"&lon="+coordinates[1]+"&appid="+ APIKEY;
+                    //This fetch brings the response about today's weather
+                    fetch(weatherApiUrl).then(function (response) {
+                        if (response.ok) {
+                            response.json().then(function (todayData) {
+                                var today = dayjs();
+                                var todayFormatted = today.format("M/D/YYYY");
+                                var tempFarenheit = parseFloat(((todayData.main.temp-273)*1.8)+32).toFixed(2);
+                                var weatherCondition = {
+                                                            date: todayFormatted,
+                                                            temp: tempFarenheit,
+                                                            wind: todayData.wind.speed,
+                                                            humidity: todayData.main.humidity,
+                                                            icon: todayData.weather[0].icon
+                                                        }
+                                showWeatherSituation("today", weatherCondition, true)
+                                saveSearchedCity();
+                                showColWeather(true);
+                            });
+                        } else {
+                            alert("There is a connection error!")
+                        }
+                    });
+                }
+            });
+        } else {
+            alert("There is a connection error!")
+        }
     });
-  };
+};
 
 //--------------------------------------------------------------------------------------------------
 
@@ -99,7 +124,7 @@ function saveSearchedCity(){
     //It will add city to the list only if it's not found in the list
     if (cityList.length !== 0) {
         for (var i = 0; i < cityList.length; i++) {
-          var city = cityList[i].toString();
+          var city = cityList[i];
           if (city.toLowerCase() === cityName.toLowerCase()) {
             return;
           }
@@ -123,4 +148,26 @@ function addSearchedButtons(cityName){
     cityBtn.text(cityName);
     cityForm.append(cityBtn);
 }
+//--------------------------------------------------------------------------------------------------
+
+//----------------------------------------- show weather situation----------------------------------
+function showWeatherSituation(datePart, weatherObj, isToday){   
+    if(isToday){
+        var city = $("#city-name");
+        var cityText = cityName+" ("+weatherObj.date+") "
+        city.text(cityText);
+    }
+    else{
+        var date = $("#"+datePart+"-date");
+        date.text(weatherObj.date);
+    }
+    var temperature = $("#"+datePart+"-temperature");
+    temperature.text(weatherObj.temp);
+    var wind = $("#"+datePart+"-wind");
+    wind.text(weatherObj.wind);
+    var humidity = $("#"+datePart+"-humidity");
+    humidity.text(weatherObj.humidity);
+    var date = $("#"+datePart+"-weather");
+}
+
 //--------------------------------------------------------------------------------------------------

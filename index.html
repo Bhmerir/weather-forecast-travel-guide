@@ -42,10 +42,10 @@
         <div class="col-8 col-md-9 col-weather invisible">
           <div class="row d-flex py-3 text-start ">
             <div class="card col-11 text-start ms-3 me-4 mt-3 top-card">
-              <h2 id="city-name">San Jose (<span id="today-date">4/6/2023</span>) <span id="today-weather">☼</span></h2>
-              <p><strong>Temp: </strong><span id="today-temperature">131.24</span> °F</p>
-              <p><strong>Wind: </strong><span id="today-wind">10.91</span> MPH</p>
-              <p><strong>Humidity: </strong><span id="today-humidity">12</span> %</p>
+              <h2 id="city-name"><span id="today-weather">☼</span></h2>
+              <p><strong>Temp: </strong><span id="today-temperature"></span> °F</p>
+              <p><strong>Wind: </strong><span id="today-wind"></span> MPH</p>
+              <p><strong>Humidity: </strong><span id="today-humidity"></span> %</p>
             </div>
           </div>
           <div class="row d-flex text-start ">
@@ -54,7 +54,7 @@
           <div class="row d-flex ms-1 py-3 text-start ">
             <div class="card custom-card col-12 col-md-6 col-lg-2 me-4 text-light text-start">
               <div class="card-body">
-                <h3 id="date1">4/7/2023</h3>
+                <h3 id="date1-date">4/7/2023</h3>
                 <p id="date1-weather">☼</p>
                 <p>Temp: <span id="date1-temperature">131.24</span> °F</p>
                 <p>Wind: <span id="date1-wind">10.91</span> MPH</p>
@@ -63,38 +63,38 @@
             </div>
             <div class="card custom-card col-12 col-md-6 col-lg-2 me-4 text-light text-start">
               <div class="card-body">
-                <h3 id="date1">4/6/2023</h3>
-                <p id="date1-weather">☼</p>
-                <p>Temp: <span id="date1-temperature">131.24</span> °F</p>
-                <p>Wind: <span id="date1-wind">10.91</span> MPH</p>
-                <p>Humidity: <span id="date1-humidity">12</span> %</p>
+                <h3 id="date2-date">4/6/2023</h3>
+                <p id="date2-weather">☼</p>
+                <p>Temp: <span id="date2-temperature">131.24</span> °F</p>
+                <p>Wind: <span id="date2-wind">10.91</span> MPH</p>
+                <p>Humidity: <span id="date2-humidity">12</span> %</p>
               </div>
             </div>
             <div class="card custom-card col-12 col-md-6 col-lg-2 me-4 text-light text-start">
               <div class="card-body">
-                <h3 id="date1">4/6/2023</h3>
-                <p id="date1-weather">☼</p>
-                <p>Temp: <span id="date1-temperature">131.24</span> °F</p>
-                <p>Wind: <span id="date1-wind">10.91</span> MPH</p>
-                <p>Humidity: <span id="date1-humidity">12</span> %</p>
+                <h3 id="date3-date">4/6/2023</h3>
+                <p id="date3-weather">☼</p>
+                <p>Temp: <span id="date3-temperature">131.24</span> °F</p>
+                <p>Wind: <span id="date3-wind">10.91</span> MPH</p>
+                <p>Humidity: <span id="date3-humidity">12</span> %</p>
               </div>
             </div>
             <div class="card custom-card col-12 col-md-6 col-lg-2 me-4 text-light text-start">
               <div class="card-body">
-                <h3 id="date1">4/6/2023</h3>
-                <p id="date1-weather">☼</p>
-                <p>Temp: <span id="date1-temperature">131.24</span> °F</p>
-                <p>Wind: <span id="date1-wind">10.91</span> MPH</p>
-                <p>Humidity: <span id="date1-humidity">12</span> %</p>
+                <h3 id="date4-date">4/6/2023</h3>
+                <p id="date4-weather">☼</p>
+                <p>Temp: <span id="date4-temperature">131.24</span> °F</p>
+                <p>Wind: <span id="date4-wind">10.91</span> MPH</p>
+                <p>Humidity: <span id="date4-humidity">12</span> %</p>
               </div>
             </div>
             <div class="card custom-card col-12 col-md-6 col-lg-2 me-4 text-light text-start">
               <div class="card-body">
-                <h3 id="date1">4/6/2023</h3>
-                <p id="date1-weather">☼</p>
-                <p>Temp: <span id="date1-temperature">131.24</span> °F</p>
-                <p>Wind: <span id="date1-wind">10.91</span> MPH</p>
-                <p>Humidity: <span id="date1-humidity">12</span> %</p>
+                <h3 id="date5-date">4/6/2023</h3>
+                <p id="date5-weather">☼</p>
+                <p>Temp: <span id="date5-temperature">131.24</span> °F</p>
+                <p>Wind: <span id="date5-wind">10.91</span> MPH</p>
+                <p>Humidity: <span id="date5-humidity">12</span> %</p>
               </div>
             </div>
           </div>
@@ -107,6 +107,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous">
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+      integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+      crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/script.js"></script>
