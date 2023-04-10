@@ -33,13 +33,17 @@ function refreshPage(){
 
 
 //------------------------------------------- search weather ---------------------------------------
-searchBtn.on("click", searchWeather);
 //This function calls the handleCallingApis function for the requested city
 function searchWeather(){
     var searchedCityValue = searchedcity.val().trim();
     var cityWordArray = searchedCityValue.split(",");
     cityName = cityWordArray[0];
     if(cityName){
+        var arr = cityName.split(" ");
+        for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+        }
+        cityName = arr.join(" ");
         //Call APIs
         handleCallingApis();
     }
@@ -196,7 +200,7 @@ function addSearchedButtons(cityName){
     var cityBtn = $("<button>");
     cityBtn.attr("type", "button");
     cityBtn.attr("data-city", cityName);
-    cityBtn.addClass("btn form-control mt-2 text-light searched-city-btn");
+    cityBtn.addClass("btn form-control mt-3 text-light searched-city-btn");
     cityBtn.text(cityName);
     cityForm.append(cityBtn);
 }
@@ -209,13 +213,16 @@ function showWeatherSituation(datePart, weatherObj, isToday){
     the variable of isToday has been defined */
     if(isToday){
         var city = $("#city-name");
-        var cityText = cityName+" ("+weatherObj.date+") "
+        var cityText = cityName+" ("+weatherObj.date+")";
         city.text(cityText);
     }
     else{
         var date = $("#"+datePart+"-date");
         date.text(weatherObj.date);
     }
+    var iconImage = $("#"+datePart+"-weather");
+    var imageUrl = "http://openweathermap.org/img/w/" + weatherObj.icon + ".png";
+    iconImage.attr("src", imageUrl)
     var temperature = $("#"+datePart+"-temperature");
     temperature.text(weatherObj.temp);
     var wind = $("#"+datePart+"-wind");
@@ -225,4 +232,28 @@ function showWeatherSituation(datePart, weatherObj, isToday){
     var date = $("#"+datePart+"-weather");
 }
 
+//--------------------------------------------------------------------------------------------------
+
+//----------------------------------------- Event Listener------------------------------------------
+
+searchBtn.on("click", searchWeather);
+
+document.addEventListener("click", function(event){
+    event.preventDefault();
+    var clickedButton = event.target;
+    if(clickedButton.matches(".searched-city-btn"))
+    {
+        cityName = clickedButton.getAttribute("data-city");
+        clickedButton.blur();
+        handleCallingApis();
+    }
+})
+//If user presses Enter on input box, the action should be like pressing search button 
+searchedcity.on("keydown", function(event) {
+    event.preventDefault();
+    var key = event.key;
+    if(key == "Enter"){
+        searchWeather();
+    }
+})
 //--------------------------------------------------------------------------------------------------

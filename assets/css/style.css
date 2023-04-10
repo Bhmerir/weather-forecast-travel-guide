@@ -31,7 +31,7 @@ h1{
     text-shadow: 1px 1px 2px lightgray;
 }
 
-#city{
+#searched-city{
     border: 2px solid
 }
 
@@ -39,4 +39,9 @@ h1{
     border:2px solid;
     background-color: gray;
     text-shadow: 2px 2px 4px #000000;
+}
+
+.searched-city-btn:hover{
+    background-color: black;
+    box-shadow: 5px 5px 5px lightgray; 
 }
