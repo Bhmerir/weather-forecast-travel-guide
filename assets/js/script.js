@@ -59,7 +59,7 @@ function searchWeather() {
 /*This function is responsible for calling the APIs of Geographical coordinates and weather*/
 function handleCallingApis() {
     var coordinates = [];
-    var GeoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKEY;
+    var GeoApiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKEY;
     //This fetch brings the response about Geographical coordinates
     fetch(GeoApiUrl).then(function (response) {
         if (response.ok) {
