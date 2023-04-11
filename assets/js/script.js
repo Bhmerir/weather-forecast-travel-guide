@@ -216,7 +216,7 @@ function showWeatherSituation(datePart, weatherObj, isToday) {
         city.text(cityText);
         var iconImage = $("<img>");
         iconImage.attr("id", "today-weather")
-        iconImage.attr("src", "http://openweathermap.org/img/w/" + weatherObj.icon + ".png");
+        iconImage.attr("src", "https://openweathermap.org/img/w/" + weatherObj.icon + ".png");
         iconImage.attr("alt", "Weather icon")
         city.append(iconImage)
     }
@@ -224,7 +224,7 @@ function showWeatherSituation(datePart, weatherObj, isToday) {
         var date = $("#" + datePart + "-date");
         date.text(weatherObj.date);
         var iconImage = $("#" + datePart + "-weather");
-        var imageUrl = "http://openweathermap.org/img/w/" + weatherObj.icon + ".png";
+        var imageUrl = "https://openweathermap.org/img/w/" + weatherObj.icon + ".png";
         iconImage.attr("src", imageUrl)
     }
 
